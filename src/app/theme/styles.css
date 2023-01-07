@@ -10,3 +10,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.divider {
+  background-color: #cd2525;
+  height: 8px;
+  width: 45%;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border-radius: 50px;
+}
+
+.w-100{
+  width: 100%;
+}

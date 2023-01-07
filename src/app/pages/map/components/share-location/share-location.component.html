@@ -1,1 +1,52 @@
-<p>share-location works!</p>
+<div class="share-location">
+  <div class="title">Share Location</div>
+  <div class="divider"></div>
+  <div class="content">
+    <form [formGroup]="form">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Location Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+      <div class="map-form-field">
+        <div class="map-container">
+          <div class="map-frame">
+            <div id="map2"></div>
+          </div>
+        </div>
+      </div>
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Location Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="Busines">Business</mat-option>
+          <mat-option value="Home">Home</mat-option>
+          <mat-option value="Public">Public</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ng-container *ngIf="logo; else addImage">
+        <div class="image-container">
+          <div class="delete-action">
+            <button (click)="deleteLogo()">&#10006;</button>
+          </div>
+          <img [src]="logo" width="100px" />
+        </div>
+      </ng-container>
+      <ng-template #addImage>
+        <div class="image-container">
+          <div (click)="uploader.click()" class="uploader"></div>
+          <input
+            hidden
+            #uploader
+            type="file"
+            accept="image/*"
+            (change)="processFile(uploader)"
+          />
+        </div>
+      </ng-template>
+      <div class="action">
+        <button class="close-btn" mat-dialog-close>Close</button>
+        <button class="save-btn" (click)="save()">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

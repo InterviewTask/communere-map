@@ -1,0 +1,61 @@
+.share-location {
+  /* margin-top: 10px; */
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.map-form-field{
+  height: 150px;
+  margin-bottom: 15px;
+}
+.map-container {
+  height: 100%;
+}
+.map-frame {
+  border: 3px solid black;
+  height: 99%;
+}
+#map2 {
+  height: 100%;
+}
+.image-container{
+  display: flex;
+  justify-content: center;
+}
+.delete-action{
+  position: absolute;
+  margin-left: 75px;
+}
+.uploader{
+width: 100px;
+height: 100px;
+background-size:contain;
+background-repeat: no-repeat;
+background-image: url(src/assets/images/upload.png);
+}
+
+.action{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-btn{
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgb(153 153 153);
+  border: none;
+  border-radius: 5px;
+
+}
+
+.save-btn{
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgb(93 191 222);
+  border: none;
+  border-radius: 5px;
+
+
+
+}

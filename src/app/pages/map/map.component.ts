@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GeolocationService } from '@communere/core';
 import * as L from 'leaflet';
 import { Observable, Subscriber } from 'rxjs';
 import { ShareLocationComponent } from './components/share-location/share-location.component';
+import { ILocation } from './models';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -38,8 +39,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.geolocationService.getCurrentPosition()
     .subscribe((position: any) => {
       this.map.flyTo([position.latitude, position.longitude], 13);
-      // const marker = L.marker([position.latitude, position.longitude]).bindPopup('Angular Leaflet');
-      // marker.addTo(this.map);
+      const marker = L.marker([position.latitude, position.longitude]);
+      marker.addTo(this.map);
     });
 
     tiles.addTo(this.map);
@@ -47,8 +48,20 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   openShareLocation() {
-    const dialogRef = this.dialog.open(ShareLocationComponent)
+    const config: MatDialogConfig = {
+      width : '30%',
+      maxHeight: '90vh',
+    }
+    const dialogRef = this.dialog.open(ShareLocationComponent,config)
+
+    dialogRef.afterClosed().subscribe(
+      (data:ILocation)=>{
+        const marker = L.marker([data.position.lat, data.position.lng]).bindPopup('ddd');
+        marker.addTo(this.map);
+      }
+    )
   }
+
 
 
 
