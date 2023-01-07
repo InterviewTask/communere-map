@@ -21,7 +21,13 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@communere/env": ["environments/environment"],
+      "@communere/shared": ["src/app/shared/index.ts"],
+      "@communere/core": ["src/app/core/index.ts"],
+      "@communere/assets/*": ["assets/*"],
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
