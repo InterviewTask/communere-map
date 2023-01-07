@@ -1,1 +1,1 @@
-// index.ts
+export * from './map/map.module';
