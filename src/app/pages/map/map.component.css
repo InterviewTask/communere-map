@@ -1,0 +1,29 @@
+.map-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom:0;
+  margin: 2px;
+}
+.action {
+  position: absolute;
+  z-index: 999;
+  left: 96%;
+  top: 2%;
+}
+.action button {
+  border-radius: 50%;
+  height: 64px;
+  width: 64px;
+  font-size: 52px;
+  background-color: #ff5200eb;
+
+}
+.map-frame {
+  border: 3px solid black;
+  height: 99%;
+}
+#map {
+  height: 100%;
+}
