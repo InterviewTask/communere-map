@@ -26,6 +26,14 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
   public ngAfterViewInit(): void {
     this.initMap();
+    this.getSavedMarkers();
+
+  }
+
+  getSavedMarkers() {
+    this.mapService.getSavedMarkers().forEach(markerData => {
+      this.bindMarker(markerData);
+    })
   }
 
 
@@ -56,12 +64,17 @@ export class MapComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(
       (data: ILocation) => {
         if (data) {
-          let component = this.viewContainerRef.createComponent(PopupComponent)
-          let marker = this.bindPopup(component, 'data', data);
-          this.popupObserveChanges(component, marker);
+          this.mapService.saveMarker(data);
+          this.bindMarker(data);
         }
       }
     )
+  }
+
+  bindMarker(data: ILocation) {
+    let component = this.viewContainerRef.createComponent(PopupComponent)
+    let marker = this.bindPopup(component, 'data', data);
+    this.popupObserveChanges(component, marker);
   }
 
   bindPopup(component: ComponentRef<any>, componentInput: string, data: ILocation): any {

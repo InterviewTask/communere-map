@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ILocation } from '../../models';
+import { MapService } from '../../services';
 import { ShareLocationComponent } from '../share-location/share-location.component';
 
 @Component({
@@ -15,6 +16,7 @@ export class PopupComponent implements OnInit {
   @Output() onRemove :EventEmitter<boolean>= new EventEmitter();
   constructor(
     private dialog: MatDialog,
+    private mapService: MapService
   ) { }
 
   ngOnInit(): void {
@@ -24,6 +26,7 @@ export class PopupComponent implements OnInit {
     this.onClose.emit(true);
   }
   remove(){
+    this.mapService.removeMarker(this.data);
     this.onRemove.emit(true);
   }
 
@@ -39,9 +42,11 @@ export class PopupComponent implements OnInit {
     const dialogRef = this.dialog.open(ShareLocationComponent, config)
 
     dialogRef.afterClosed().subscribe(
-      (data: ILocation) => {
-       if(data){
-        this.dataChange.emit(data);
+      (editedData: ILocation) => {
+       if(editedData){
+        this.mapService.removeMarker(this.data);
+        this.mapService.saveMarker(editedData);
+        this.dataChange.emit(editedData);
        }
       }
     )
