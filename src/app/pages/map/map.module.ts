@@ -11,12 +11,14 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { PopupComponent } from './components/popup/popup.component';
 
 
 @NgModule({
   declarations: [
     MapComponent,
-    ShareLocationComponent
+    ShareLocationComponent,
+    PopupComponent
   ],
   imports: [
     MapRoutingModule,

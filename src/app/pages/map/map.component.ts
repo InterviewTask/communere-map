@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, Injector, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GeolocationService } from '@communere/core';
 import * as L from 'leaflet';
 import { Observable, Subscriber } from 'rxjs';
+import { PopupComponent } from './components/popup/popup.component';
 import { ShareLocationComponent } from './components/share-location/share-location.component';
 import { ILocation } from './models';
 @Component({
@@ -12,10 +13,11 @@ import { ILocation } from './models';
 })
 export class MapComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
-
   constructor(
     private geolocationService: GeolocationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector
   ) { }
 
   ngOnInit(): void {
@@ -37,11 +39,11 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
 
     this.geolocationService.getCurrentPosition()
-    .subscribe((position: any) => {
-      this.map.flyTo([position.latitude, position.longitude], 13);
-      const marker = L.marker([position.latitude, position.longitude]);
-      marker.addTo(this.map);
-    });
+      .subscribe((position: any) => {
+        this.map.flyTo([position.latitude, position.longitude], 13);
+        const marker = L.marker([position.latitude, position.longitude]);
+        marker.addTo(this.map);
+      });
 
     tiles.addTo(this.map);
 
@@ -49,15 +51,30 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   openShareLocation() {
     const config: MatDialogConfig = {
-      width : '30%',
+      width: '30%',
       maxHeight: '90vh',
     }
-    const dialogRef = this.dialog.open(ShareLocationComponent,config)
+    const dialogRef = this.dialog.open(ShareLocationComponent, config)
 
     dialogRef.afterClosed().subscribe(
-      (data:ILocation)=>{
-        const marker = L.marker([data.position.lat, data.position.lng]).bindPopup('ddd');
+      (data: ILocation) => {
+
+        let component = this.resolver.resolveComponentFactory(PopupComponent)
+          .create(this.injector);
+        component.setInput('data', data)
+        component.changeDetectorRef.detectChanges();
+
+        const marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
         marker.addTo(this.map);
+
+        component.instance.dataChange.subscribe((data: ILocation) => {
+          this.map.removeLayer(marker);
+          component.setInput('data', data)
+          component.changeDetectorRef.detectChanges();
+          const marker2 = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
+          marker2.addTo(this.map);
+        })
+
       }
     )
   }
