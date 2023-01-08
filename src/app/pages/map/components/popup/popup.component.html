@@ -1,3 +1,25 @@
-<p>popup works!</p>
-{{data | json}}
-<button (click)="openEdit()">Edit</button>
+<!-- <p>popup works!</p>
+<button (click)="openEdit()">Edit</button> -->
+
+<div class="location-detail">
+  <div class="dialog-title">Location Detail</div>
+  <div class="divider"></div>
+  <div class="content">
+    <div class="info">
+      <span class ='title'>Name: </span>
+      <span class ='value'>{{data?.name}}</span>
+    </div>
+    <div class="info">
+      <span class ='title'>Type: </span>
+      <span class ='value'>{{data?.type}}</span>
+    </div>
+    <div class="info logo">
+      <img [src]="data?.logo" width="100px" />
+    </div>
+  </div>
+  <div class="action">
+    <button class="close-btn" (click)="close()">Close</button>
+    <button class="save-btn" (click)="openEdit()">Edit</button>
+    <button class="remove-btn" (click)="remove()">remove</button>
+  </div>
+</div>

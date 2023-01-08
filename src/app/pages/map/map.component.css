@@ -7,17 +7,31 @@
   margin: 2px;
 }
 .action {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 999;
   left: 96%;
   top: 2%;
 }
-.action button {
+.action .share-location {
+  margin-top: 5px;
   border-radius: 50%;
   height: 64px;
   width: 64px;
   font-size: 52px;
   background-color: #ff5200eb;
+
+}
+
+.action .current-location {
+  margin-top: 5px;
+  border-radius: 50%;
+  height: 64px;
+  width: 64px;
+  font-size: 20px;
+  font-weight: bolder;
+  background-color: #008cffeb;
 
 }
 .map-frame {

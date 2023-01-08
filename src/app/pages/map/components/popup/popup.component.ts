@@ -11,17 +11,30 @@ import { ShareLocationComponent } from '../share-location/share-location.compone
 export class PopupComponent implements OnInit {
   @Input() data?: ILocation;
   @Output() dataChange :EventEmitter<ILocation>= new EventEmitter();
+  @Output() onClose :EventEmitter<boolean>= new EventEmitter();
+  @Output() onRemove :EventEmitter<boolean>= new EventEmitter();
   constructor(
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
   }
+
+  close() {
+    this.onClose.emit(true);
+  }
+  remove(){
+    this.onRemove.emit(true);
+  }
+
   openEdit(){
     const config: MatDialogConfig = {
       width: '30%',
       maxHeight: '90vh',
-      data : this.data
+      data: {
+        defaultPosition: [this.data?.position.lat,this.data?.position.lng],
+        feed:  this.data
+      }
     }
     const dialogRef = this.dialog.open(ShareLocationComponent, config)
 

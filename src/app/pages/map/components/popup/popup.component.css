@@ -1,0 +1,44 @@
+.info{
+  font-size: 15px;
+  font-weight: bold;
+  margin-top:10px;
+}
+.info .title{
+  color: #787878
+}
+
+.info .value{
+
+}
+.logo {
+  display: flex;
+  justify-content: center;
+}
+.action{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.close-btn{
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgb(153 153 153);
+  border: none;
+  border-radius: 5px;
+}
+
+.save-btn{
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgb(93 191 222);
+  border: none;
+  border-radius: 5px;
+}
+.remove-btn{
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgb(222, 93, 93);
+  border: none;
+  border-radius: 5px;
+}

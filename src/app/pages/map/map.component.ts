@@ -6,6 +6,7 @@ import { Observable, Subscriber } from 'rxjs';
 import { PopupComponent } from './components/popup/popup.component';
 import { ShareLocationComponent } from './components/share-location/share-location.component';
 import { ILocation } from './models';
+import { MapService } from './services';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -13,11 +14,12 @@ import { ILocation } from './models';
 })
 export class MapComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
+  defaultPosition: any = [35.7219, 51.3347]; // Tehran
   constructor(
     private geolocationService: GeolocationService,
     private dialog: MatDialog,
-    private resolver: ComponentFactoryResolver,
-    private injector: Injector
+    private viewContainerRef: ViewContainerRef,
+    private mapService: MapService,
   ) { }
 
   ngOnInit(): void {
@@ -28,58 +30,68 @@ export class MapComponent implements OnInit, AfterViewInit {
 
 
   private initMap(): void {
-    this.map = L.map('map', {
-      center: [35.7219, 51.3347],
-      zoom: 15
-    });
+    this.map = this.mapService.createMap('map', this.defaultPosition);
+  }
 
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-
+  goToCurrentLocation() {
     this.geolocationService.getCurrentPosition()
       .subscribe((position: any) => {
-        this.map.flyTo([position.latitude, position.longitude], 13);
-        const marker = L.marker([position.latitude, position.longitude]);
-        marker.addTo(this.map);
+        this.defaultPosition = [position.lat, position.lng];
+        this.map.flyTo(this.defaultPosition, 13);
       });
-
-    tiles.addTo(this.map);
-
   }
 
   openShareLocation() {
     const config: MatDialogConfig = {
       width: '30%',
       maxHeight: '90vh',
+      data: {
+        defaultPosition: this.defaultPosition,
+        feed: null
+      }
+
     }
     const dialogRef = this.dialog.open(ShareLocationComponent, config)
 
     dialogRef.afterClosed().subscribe(
       (data: ILocation) => {
-
-        let component = this.resolver.resolveComponentFactory(PopupComponent)
-          .create(this.injector);
-        component.setInput('data', data)
-        component.changeDetectorRef.detectChanges();
-
-        let marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
-        marker.addTo(this.map);
-
-        component.instance.dataChange.subscribe((data: ILocation) => {
-          this.map.removeLayer(marker);
-          component.setInput('data', data)
-          component.changeDetectorRef.detectChanges();
-          marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
-          marker.addTo(this.map);
-        })
-
+        if (data) {
+          let component = this.viewContainerRef.createComponent(PopupComponent)
+          let marker = this.bindPopup(component, 'data', data);
+          this.popupObserveChanges(component, marker);
+        }
       }
     )
   }
 
+  bindPopup(component: ComponentRef<any>, componentInput: string, data: ILocation): any {
+    component.setInput(componentInput, data)
+    component.changeDetectorRef.detectChanges();
+    let marker = L.marker([data.position.lat, data.position.lng])
+      .bindPopup(component.location.nativeElement);
+    marker.addTo(this.map);
+    return marker;
+  }
 
+  popupObserveChanges(component: ComponentRef<any>, marker?: any) {
 
+    component.instance.dataChange.subscribe((data: ILocation) => {
+      if (data) {
+        this.map.removeLayer(marker);
+        marker = this.bindPopup(component, 'data', data);
+      }
+    });
 
+    component.instance.onClose.subscribe((data: boolean) => {
+      if (data) {
+        marker.closePopup();
+      }
+    });
+
+    component.instance.onRemove.subscribe((data: boolean) => {
+      if (data) {
+        this.map.removeLayer(marker);
+      }
+    });
+  }
 }

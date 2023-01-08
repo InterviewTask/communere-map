@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ILocation } from '../../models';
 import * as L from 'leaflet';
 import { GeolocationService } from '@communere/core';
+import { MapService } from '../../services';
 @Component({
   selector: 'app-share-location',
   templateUrl: './share-location.component.html',
@@ -12,12 +13,14 @@ import { GeolocationService } from '@communere/core';
 export class ShareLocationComponent implements OnInit, AfterViewInit {
   form!: FormGroup;
   private map!: L.Map;
-  curentLoc = { lat: 35.7219, lng: 51.3347 };// Tehran
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ILocation,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      defaultPosition: any,
+      feed: ILocation
+    },
     private dialogRef: MatDialogRef<ShareLocationComponent>,
     private fb: FormBuilder,
-    private geolocationService: GeolocationService,
+    private mapService: MapService,
   ) { }
 
   ngAfterViewInit(): void {
@@ -25,8 +28,8 @@ export class ShareLocationComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.data) {
-      this.createForm(this.data);
+    if (this.data.feed) {
+      this.createForm(this.data.feed);
     } else {
       this.createForm();
     }
@@ -35,7 +38,7 @@ export class ShareLocationComponent implements OnInit, AfterViewInit {
   createForm(item?: ILocation) {
     this.form = this.fb.group({
       name: [item ? item.name : null, []],
-      position: [item ? item.position : this.curentLoc, []],
+      position: [item ? item.position : this.data.defaultPosition, []],
       type: [item ? item.type : 'Busines', []],
       logo: [item ? item.logo : null, []],
     });
@@ -51,16 +54,9 @@ export class ShareLocationComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
     const { position } = this.form.value;
-    this.map = L.map('map2', {
-      center: [35.7219, 51.3347],
-      zoom: 15
-    });
+    this.map = this.mapService.createMap('map2',this.data.defaultPosition);
 
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    const marker = L.marker([position.lat, position.lng], {
+    const marker = L.marker(position, {
       draggable: true,
     });
     marker.on('dragend', (e) => {
@@ -68,14 +64,6 @@ export class ShareLocationComponent implements OnInit, AfterViewInit {
     })
     marker.addTo(this.map);
 
-
-    tiles.addTo(this.map);
-
-
-    this.geolocationService.getCurrentPosition()
-      .subscribe((position: any) => {
-        this.curentLoc = position;
-      });
   }
 
   get logo () {

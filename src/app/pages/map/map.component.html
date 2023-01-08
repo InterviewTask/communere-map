@@ -1,7 +1,10 @@
 <div class="map-container">
   <div class="map-frame">
     <div class="action">
-      <button  (click)="openShareLocation()">+</button>
+      <button class="share-location" (click)="openShareLocation()">+</button>
+      <button class="current-location" (click)="goToCurrentLocation()">
+        [ ]
+      </button>
     </div>
     <div id="map"></div>
   </div>
