@@ -42,14 +42,6 @@ export class ShareLocationComponent implements OnInit, AfterViewInit {
       type: [item ? item.type : 'Busines', []],
       logo: [item ? item.logo : null, []],
     });
-    this.logForm();
-  }
-
-  logForm() {
-    this.form.valueChanges.subscribe(data => {
-      console.log('form: ', this.form.value);
-
-    })
   }
 
   private initMap(): void {

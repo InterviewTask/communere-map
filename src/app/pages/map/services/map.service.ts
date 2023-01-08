@@ -1,6 +1,6 @@
+import * as L from 'leaflet';
 import { Injectable } from '@angular/core';
 import { StorageService } from '@communere/core';
-import * as L from 'leaflet';
 import { ILocation } from '../models';
 @Injectable()
 export class MapService {
