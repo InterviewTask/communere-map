@@ -64,15 +64,15 @@ export class MapComponent implements OnInit, AfterViewInit {
         component.setInput('data', data)
         component.changeDetectorRef.detectChanges();
 
-        const marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
+        let marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
         marker.addTo(this.map);
 
         component.instance.dataChange.subscribe((data: ILocation) => {
           this.map.removeLayer(marker);
           component.setInput('data', data)
           component.changeDetectorRef.detectChanges();
-          const marker2 = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
-          marker2.addTo(this.map);
+          marker = L.marker([data.position.lat, data.position.lng]).bindPopup(component.location.nativeElement);
+          marker.addTo(this.map);
         })
 
       }
