@@ -1,0 +1,11 @@
+.other-device{
+  display: none;
+}
+ @media only screen and (max-width: 992px) {
+  .desktop{
+    display: none;
+  }
+  .other-device{
+    display: block;
+  }
+ }
