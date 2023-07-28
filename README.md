@@ -1,27 +1,35 @@
-# CommunereMap
+# Communere Map
+This project was generated with Leaflet and [Angular CLI](https://github.com/angular/angular-cli) version 14.0.4.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.4.
+## Demo
+Demo : [https://communere-map.vercel.app/](https://communere-map.vercel.app/)
 
-## Development server
+### Important Points
+-	TypeScript
+-	Effective use of RxJS
+-	Effective use of Dependency Injection
+-	Project Structure
+-	Map Component and Module (eg: Leaflet)
+-	Datastore Module and Service (eg: localStorage and/or In-memory)
+-	Pure CSS
+-	Flexbox or Grid
+-	CSS Layout (positioning)
+-	Responsiveness (Only desktop screens)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Main Page
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![1](https://user-images.githubusercontent.com/25563547/211194384-d1791313-28f5-41c4-ba87-2fb493d0db03.JPG)
 
-## Build
+## Share Location
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+![3](https://user-images.githubusercontent.com/25563547/211194458-8169e34a-ab58-4479-a02c-de06be74103c.JPG)
 
-## Running unit tests
+## Location Details
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![2](https://user-images.githubusercontent.com/25563547/211194496-6ac570f3-fd0a-4a35-96da-1593b3d07ef3.JPG)
 
-## Running end-to-end tests
+## Edit Location
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+![4](https://user-images.githubusercontent.com/25563547/211194520-5aa31246-8178-4470-b381-5f429317fa94.JPG)
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
