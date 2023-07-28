@@ -14,12 +14,14 @@ export class PopupComponent implements OnInit {
   @Output() dataChange :EventEmitter<ILocation>= new EventEmitter();
   @Output() onClose :EventEmitter<boolean>= new EventEmitter();
   @Output() onRemove :EventEmitter<boolean>= new EventEmitter();
+  address: string ='';
   constructor(
     private dialog: MatDialog,
     private mapService: MapService
   ) { }
 
   ngOnInit(): void {
+    this.getAddress();
   }
 
   close() {
@@ -50,5 +52,11 @@ export class PopupComponent implements OnInit {
        }
       }
     )
+  }
+
+  getAddress(){
+    this.mapService.reverce(this.data?.position.lat,this.data?.position.lng).subscribe(res=>{
+      this.address=res.display_name
+    })
   }
 }

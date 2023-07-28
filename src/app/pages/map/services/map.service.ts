@@ -2,11 +2,14 @@ import * as L from 'leaflet';
 import { Injectable } from '@angular/core';
 import { StorageService } from '@communere/core';
 import { ILocation } from '../models';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable()
 export class MapService {
-
+  findUrl='https://nominatim.openstreetmap.org/';
   constructor(
-    private storageService:StorageService
+    private storageService:StorageService,
+    private http: HttpClient
   ) { }
 
   createMap(element:string,defaultPosition:any) {
@@ -36,6 +39,14 @@ export class MapService {
     if(markerData){
       this.storageService.removeItem(markerData);
     }
+  }
+
+  search(address:string):Observable<any>{
+    return this.http.get(`${this.findUrl}/search/${address}?format=json`)
+  }
+
+  reverce(lat:number|undefined,lng:number|undefined):Observable<any>{
+    return this.http.get(`${this.findUrl}/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
   }
 
 

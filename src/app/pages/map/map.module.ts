@@ -10,9 +10,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopupComponent } from './components/popup/popup.component';
 
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,13 +23,13 @@ import { PopupComponent } from './components/popup/popup.component';
   ],
   imports: [
     MapRoutingModule,
-
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-
+    HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     CommonModule
   ],
   providers: [MapService]

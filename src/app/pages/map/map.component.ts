@@ -14,6 +14,7 @@ import { MapService } from './services';
 })
 export class MapComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
+  inputValue = '';
   defaultPosition: any = [35.7219, 51.3347]; // Tehran
   constructor(
     private geolocationService: GeolocationService,
@@ -107,4 +108,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  goToAddress(){
+    this.mapService.search(this.inputValue).subscribe(res=>{
+      this.defaultPosition= [res[0].lat,res[0].lon];
+      this.map.flyTo(this.defaultPosition, 13);
+    })
+  }
+
 }
